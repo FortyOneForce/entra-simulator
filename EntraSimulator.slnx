@@ -1,0 +1,10 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/FortyOneForce.EntraSimulator.AppHost/FortyOneForce.EntraSimulator.AppHost.csproj" />
+    <Project Path="src/FortyOneForce.EntraSimulator.Aspire/FortyOneForce.EntraSimulator.Aspire.csproj" />
+    <Project Path="src/FortyOneForce.EntraSimulator/FortyOneForce.EntraSimulator.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/FortyOneForce.EntraSimulator.Tests/FortyOneForce.EntraSimulator.Tests.csproj" />
+  </Folder>
+</Solution>
