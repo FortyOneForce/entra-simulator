@@ -5,14 +5,17 @@ namespace FortyOneForce.EntraSimulator.Services;
 
 public class RsaKeyService
 {
+    private const int KeyIdLength = 8;
+    private const int RsaKeySize = 2048;
+
     private readonly RSA _rsa;
     private readonly RsaSecurityKey _securityKey;
     private readonly string _keyId;
 
     public RsaKeyService()
     {
-        _rsa = RSA.Create(2048);
-        _keyId = Guid.NewGuid().ToString("N")[..8];
+        _rsa = RSA.Create(RsaKeySize);
+        _keyId = Guid.NewGuid().ToString("N")[..KeyIdLength];
         _securityKey = new RsaSecurityKey(_rsa) { KeyId = _keyId };
     }
 

@@ -8,6 +8,9 @@ namespace FortyOneForce.EntraSimulator.Services;
 
 public class TokenService
 {
+    public const int AccessTokenExpirySeconds = 3600;
+    private static readonly TimeSpan AccessTokenExpiry = TimeSpan.FromSeconds(AccessTokenExpirySeconds);
+
     private readonly RsaKeyService _keyService;
 
     public TokenService(RsaKeyService keyService)
@@ -31,7 +34,7 @@ public class TokenService
         foreach (var claim in user.Claims)
             claims.Add(new Claim(claim.Key, claim.Value));
 
-        return CreateToken(issuer, audience, claims, TimeSpan.FromHours(1));
+        return CreateToken(issuer, audience, claims, AccessTokenExpiry);
     }
 
     public string GenerateIdToken(string issuer, string audience, UserOptions user, TenantOptions tenant, string? nonce)
@@ -52,7 +55,7 @@ public class TokenService
         foreach (var claim in user.Claims)
             claims.Add(new Claim(claim.Key, claim.Value));
 
-        return CreateToken(issuer, audience, claims, TimeSpan.FromHours(1));
+        return CreateToken(issuer, audience, claims, AccessTokenExpiry);
     }
 
     public string GenerateClientCredentialsToken(string issuer, string audience, string clientId, string tenantId)
@@ -65,7 +68,7 @@ public class TokenService
             new("appid", clientId),
         };
 
-        return CreateToken(issuer, audience, claims, TimeSpan.FromHours(1));
+        return CreateToken(issuer, audience, claims, AccessTokenExpiry);
     }
 
     public string GenerateRefreshToken()

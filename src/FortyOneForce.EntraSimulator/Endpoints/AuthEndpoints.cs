@@ -9,6 +9,8 @@ namespace FortyOneForce.EntraSimulator.Endpoints;
 
 public static class AuthEndpoints
 {
+    private const int RefreshTokenExpiryDays = 90;
+
     public static void MapAuthEndpoints(this WebApplication app)
     {
         // Authorization endpoint - GET shows login UI
@@ -200,13 +202,13 @@ public static class AuthEndpoints
 
         refreshTokenStore.Store(refreshToken, new RefreshTokenData(
             tenant.TenantId, clientId, user.ObjectId, codeData.Scopes,
-            DateTime.UtcNow.AddDays(90)));
+            DateTime.UtcNow.AddDays(RefreshTokenExpiryDays)));
 
         return Results.Json(new
         {
             access_token = accessToken,
             token_type = "Bearer",
-            expires_in = 3600,
+            expires_in = TokenService.AccessTokenExpirySeconds,
             id_token = idToken,
             refresh_token = refreshToken,
             scope = string.Join(" ", codeData.Scopes),
@@ -241,7 +243,7 @@ public static class AuthEndpoints
         {
             access_token = accessToken,
             token_type = "Bearer",
-            expires_in = 3600,
+            expires_in = TokenService.AccessTokenExpirySeconds,
             scope = scope,
         });
     }
@@ -274,14 +276,14 @@ public static class AuthEndpoints
 
         refreshTokenStore.Store(newRefreshToken, tokenData with
         {
-            ExpiresAt = DateTime.UtcNow.AddDays(90)
+            ExpiresAt = DateTime.UtcNow.AddDays(RefreshTokenExpiryDays)
         });
 
         return Results.Json(new
         {
             access_token = accessToken,
             token_type = "Bearer",
-            expires_in = 3600,
+            expires_in = TokenService.AccessTokenExpirySeconds,
             id_token = idToken,
             refresh_token = newRefreshToken,
             scope = string.Join(" ", tokenData.Scopes),
